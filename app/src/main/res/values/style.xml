@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="darkBlueButton">
+        <item name="android:textSize">35sp</item>
+    </style>
+
+    <style name="darkBlueh1">
+        <item name="android:textSize">45sp</item>
+        <item name="android:textColor">@color/mainDarkBlue</item>
+        <item name="android:textFontWeight" tools:targetApi="28">800</item>
+    </style>
+</resources>
