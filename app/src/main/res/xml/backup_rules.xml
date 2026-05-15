@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+
+    <!-- SharedPreferences -->
+    <include domain="sharedpref" path="."/>
+
+    <!-- Bancos SQLite -->
+    <include domain="database" path="."/>
+
+    <!-- Arquivos internos -->
+    <include domain="file" path="."/>
+
+</full-backup-content>

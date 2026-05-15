@@ -8,5 +8,13 @@
         <item name="android:textSize">45sp</item>
         <item name="android:textColor">@color/mainDarkBlue</item>
         <item name="android:textFontWeight" tools:targetApi="28">800</item>
+        <item name="android:fontFamily">@font/alexandria</item>
+    </style>
+
+    <style name="darkBlueh3">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/mainDarkBlue</item>
+        <item name="android:textFontWeight" tools:targetApi="28">500</item>
+        <item name="android:fontFamily">@font/alexandria</item>
     </style>
 </resources>
