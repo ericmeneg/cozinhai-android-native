@@ -9,7 +9,7 @@
         android:icon="@drawable/ic_launcher_background"
         android:label=""
         android:roundIcon="@drawable/ic_launcher_background"
-        android:theme="@style/Theme.CozinhAi">
+        android:theme="@style/Theme.CozinhaAi">
         <activity
             android:name=".MainActivity"
             android:exported="true">
