@@ -1,20 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="darkBlueButton">
-        <item name="android:textSize">35sp</item>
+    <style name="button">
+        <item name="android:background">@drawable/button_style</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">15sp</item>
+        <item name="backgroundTint">@null</item>
     </style>
 
-    <style name="darkBlueh1">
+    <style name="h1">
         <item name="android:textSize">45sp</item>
         <item name="android:textColor">@color/mainDarkBlue</item>
         <item name="android:textFontWeight" tools:targetApi="28">800</item>
         <item name="android:fontFamily">@font/alexandria</item>
     </style>
 
-    <style name="darkBlueh3">
+    <style name="h3">
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/mainDarkBlue</item>
         <item name="android:textFontWeight" tools:targetApi="28">500</item>
         <item name="android:fontFamily">@font/alexandria</item>
+    </style>
+
+    <style name="text">
+        <item name="android:textColor">@color/mainDarkBlue</item>
+        <item name="android:textFontWeight" tools:targetApi="28">800</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="input">
+        <item name="borderWidth">1sp</item>
     </style>
 </resources>
