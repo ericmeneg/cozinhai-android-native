@@ -14,6 +14,13 @@
         <item name="android:fontFamily">@font/alexandria</item>
     </style>
 
+    <style name="h2">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/mainDarkBlue</item>
+        <item name="android:textFontWeight" tools:targetApi="28">800</item>
+        <item name="android:fontFamily">@font/alexandria</item>
+    </style>
+
     <style name="h3">
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/mainDarkBlue</item>
@@ -23,7 +30,6 @@
 
     <style name="text">
         <item name="android:textColor">@color/mainDarkBlue</item>
-        <item name="android:textFontWeight" tools:targetApi="28">800</item>
         <item name="android:textSize">18sp</item>
     </style>
 
