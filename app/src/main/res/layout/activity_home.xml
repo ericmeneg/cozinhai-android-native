@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Home">
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="223dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toTopOf="@+id/recomendacoesText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.472"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.491"
+        app:srcCompat="@drawable/logo" />
+
+    <TextView
+        android:id="@+id/recomendacoesText"
+        style="@style/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="36dp"
+        android:text="Recomendações diárias"
+        app:layout_constraintBottom_toTopOf="@+id/cardView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="300dp"
+        android:layout_height="120dp"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/cardView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
+        android:layout_width="300dp"
+        android:layout_height="120dp"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/cardView3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView3"
+        android:layout_width="300dp"
+        android:layout_height="120dp"
+        android:layout_marginBottom="76dp"
+        app:layout_constraintBottom_toTopOf="@+id/ingredientesText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/ingredientesText"
+        style="@style/h2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ingredientes de Época"
+        app:layout_constraintBottom_toTopOf="@+id/selecionarBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/selecionarBtn"
+        style="@style/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Selecionar o mês"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="828dp" />
+
+    <LinearLayout
+        android:layout_width="351dp"
+        android:layout_height="47dp"
+        android:orientation="horizontal"
+        tools:layout_editor_absoluteX="37dp"
+        tools:layout_editor_absoluteY="916dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="117dp"
+            android:layout_height="45dp" />
+
+        <Space
+            android:layout_width="115dp"
+            android:layout_height="45dp" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="117dp"
+            android:layout_height="45dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="351dp"
+        android:layout_height="47dp"
+        android:orientation="horizontal"
+        tools:layout_editor_absoluteX="37dp"
+        tools:layout_editor_absoluteY="1011dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="117dp"
+            android:layout_height="45dp" />
+
+        <Space
+            android:layout_width="115dp"
+            android:layout_height="45dp" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="117dp"
+            android:layout_height="45dp" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
