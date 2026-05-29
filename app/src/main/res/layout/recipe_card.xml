@@ -66,8 +66,8 @@
 
                     <Button
                         style="@style/seeRecipeBtn"
-                        android:layout_width="130dp"
-                        android:layout_height="30dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="34dp"
                         android:text="Ver Receita >" />
 
                 </LinearLayout>
