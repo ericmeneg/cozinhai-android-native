@@ -7,29 +7,29 @@
     android:layout_height="match_parent"
     tools:context=".Home">
 
+
     <ImageView
         android:id="@+id/logo"
         android:layout_width="223dp"
         android:layout_height="50dp"
         app:layout_constraintBottom_toTopOf="@+id/recomendacoesText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.472"
+        app:layout_constraintHorizontal_bias="0.469"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.491"
+        app:layout_constraintVertical_bias="0.45"
         app:srcCompat="@drawable/logo" />
-
 
     <TextView
         android:id="@+id/recomendacoesText"
         style="@style/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="76dp"
         android:text="Recomendações diárias"
         app:layout_constraintBottom_toTopOf="@+id/cardRecipe1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.509"
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.cardview.widget.CardView
