@@ -26,37 +26,45 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="36dp"
         android:text="Recomendações diárias"
-        app:layout_constraintBottom_toTopOf="@+id/cardView"
+        app:layout_constraintBottom_toTopOf="@+id/cardRecipe1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent" />
 
+
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
+        android:id="@+id/cardRecipe1"
+        style="@style/recipeCard"
         android:layout_width="300dp"
         android:layout_height="120dp"
         android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/cardView2"
+        app:layout_constraintBottom_toTopOf="@+id/cardRecipe2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
+        <include layout="@layout/recipe_card" />
+    </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView2"
+        android:id="@+id/cardRecipe2"
         android:layout_width="300dp"
         android:layout_height="120dp"
         android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/cardView3"
+        app:layout_constraintBottom_toTopOf="@+id/cardRecipe3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
+        <include layout="@layout/recipe_card" />
+    </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView3"
+        android:id="@+id/cardRecipe3"
         android:layout_width="300dp"
         android:layout_height="120dp"
         android:layout_marginBottom="76dp"
         app:layout_constraintBottom_toTopOf="@+id/ingredientesText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
+        <include layout="@layout/recipe_card" />
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/ingredientesText"
