@@ -19,22 +19,21 @@
         app:layout_constraintVertical_bias="0.491"
         app:srcCompat="@drawable/logo" />
 
+
     <TextView
         android:id="@+id/recomendacoesText"
         style="@style/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="36dp"
+        android:layout_marginBottom="60dp"
         android:text="Recomendações diárias"
         app:layout_constraintBottom_toTopOf="@+id/cardRecipe1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent" />
-
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardRecipe1"
-        style="@style/recipeCard"
         android:layout_width="300dp"
         android:layout_height="120dp"
         android:layout_marginBottom="32dp"
@@ -59,10 +58,11 @@
         android:id="@+id/cardRecipe3"
         android:layout_width="300dp"
         android:layout_height="120dp"
-        android:layout_marginBottom="76dp"
+        android:layout_marginBottom="112dp"
         app:layout_constraintBottom_toTopOf="@+id/ingredientesText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
+
         <include layout="@layout/recipe_card" />
     </androidx.cardview.widget.CardView>
 
@@ -71,6 +71,7 @@
         style="@style/h2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="36dp"
         android:text="Ingredientes de Época"
         app:layout_constraintBottom_toTopOf="@+id/selecionarBtn"
         app:layout_constraintEnd_toEndOf="parent"
@@ -81,18 +82,24 @@
         style="@style/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
         android:text="Selecionar o mês"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.48"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="828dp" />
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="351dp"
         android:layout_height="47dp"
+        android:layout_marginBottom="44dp"
         android:orientation="horizontal"
-        tools:layout_editor_absoluteX="37dp"
-        tools:layout_editor_absoluteY="916dp">
+        android:rotationX="-3"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintStart_toStartOf="parent">
 
         <androidx.cardview.widget.CardView
             android:layout_width="117dp"
@@ -108,11 +115,15 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout3"
         android:layout_width="351dp"
         android:layout_height="47dp"
+        android:layout_marginBottom="228dp"
         android:orientation="horizontal"
-        tools:layout_editor_absoluteX="37dp"
-        tools:layout_editor_absoluteY="1011dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintStart_toStartOf="parent">
 
         <androidx.cardview.widget.CardView
             android:layout_width="117dp"

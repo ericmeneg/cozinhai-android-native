@@ -22,7 +22,6 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        style="@style/recipeCard"
         android:gravity="center"
         android:layout_width="405dp"
         android:layout_height="wrap_content"

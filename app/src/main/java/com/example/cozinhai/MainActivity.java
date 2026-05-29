@@ -1,11 +1,13 @@
 package com.example.cozinhai;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import android.text.Html;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -29,6 +31,14 @@ public class MainActivity extends AppCompatActivity {
         TextView semContaText = findViewById(R.id.semContaText);
         TextView cadastroText = findViewById(R.id.cadastroText);
         TextView visitanteOption = findViewById(R.id.visitanteOption);
+
+        entrarBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, Home.class);
+                startActivity(intent);
+            }
+        });
 
         cadastroText.setText(
                 Html.fromHtml(getString(R.string.link_cadastro))
