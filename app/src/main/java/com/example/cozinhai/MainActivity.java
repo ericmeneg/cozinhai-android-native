@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         EditText passwordInput = findViewById(R.id.passwordInput);
         Button entrarBtn = findViewById(R.id.entrarBtn);
         TextView cadastroText = findViewById(R.id.cadastroText);
+        TextView entrarVisitante = findViewById(R.id.visitanteOption);
 
         entrarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,6 +49,14 @@ public class MainActivity extends AppCompatActivity {
         cadastroText.setText(
                 Html.fromHtml(getString(R.string.link_cadastro))
         );
+        entrarVisitante.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, Home.class);
+                startActivity(intent);
+            }
+        });
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
