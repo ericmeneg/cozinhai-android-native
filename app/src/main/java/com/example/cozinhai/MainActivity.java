@@ -1,5 +1,6 @@
 package com.example.cozinhai;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -7,6 +8,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import android.text.Html;
+import android.view.View;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,6 +37,17 @@ public class MainActivity extends AppCompatActivity {
         Button entrarBtn = findViewById(R.id.entrarBtn);
         TextView cadastroText = findViewById(R.id.cadastroText);
 
+        entrarBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, Home.class);
+                startActivity(intent);
+            }
+        });
+
+        cadastroText.setText(
+                Html.fromHtml(getString(R.string.link_cadastro))
+        );
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
