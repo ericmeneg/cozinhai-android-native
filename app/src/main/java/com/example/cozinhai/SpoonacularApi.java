@@ -1,0 +1,26 @@
+package com.example.cozinhai;
+
+import java.util.List;
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
+
+public interface SpoonacularApi {
+    // Busca por ingredientes
+    @GET("recipes/findByIngredients")
+    Call<List<Recipe>> findByIngredients(
+            @Query("ingredients") String ingredients,
+            @Query("number") int number,
+            @Query("apiKey") String apiKey
+    );
+
+    // Busca por título (Complex Search) com filtros
+    @GET("recipes/complexSearch")
+    Call<RecipeSearchResponse> searchByTitle(
+            @Query("query") String query,
+            @Query("diet") String diet,
+            @Query("intolerances") String intolerances,
+            @Query("number") int number,
+            @Query("apiKey") String apiKey
+    );
+}
