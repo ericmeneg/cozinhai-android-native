@@ -86,6 +86,10 @@ public class MainActivity extends AppCompatActivity {
                         String token = response.body().getAccessTokenData().getToken();
                         Log.d("LOGIN", "Sucesso! Token: " + token);
                         Toast.makeText(MainActivity.this, "Login realizado com sucesso!", Toast.LENGTH_SHORT).show();
+                        
+                        Intent intent = new Intent(MainActivity.this, Home.class);
+                        startActivity(intent);
+                        finish();
                     } else {
                         Log.d("LOGIN", "Erro no login. Código: " + response.code());
                         Toast.makeText(MainActivity.this, "E-mail ou senha incorretos", Toast.LENGTH_SHORT).show();
