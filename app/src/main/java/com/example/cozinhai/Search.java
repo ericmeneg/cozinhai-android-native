@@ -34,7 +34,7 @@ public class Search extends AppCompatActivity {
     private boolean[] selectedFilters = {false, false, false, false, false};
     
     // Substitua pela sua chave da API Spoonacular
-    private static final String API_KEY = "SUA_API_KEY_AQUI"; 
+    private static final String API_KEY = "3b8b03322d804d3496d6eee0aef27ead";
     private SpoonacularApi spoonacularApi;
 
     @Override

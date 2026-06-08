@@ -23,4 +23,11 @@ public interface SpoonacularApi {
             @Query("number") int number,
             @Query("apiKey") String apiKey
     );
+
+    // Busca receitas aleatórias
+    @GET("recipes/random")
+    Call<RandomRecipesResponse> getRandomRecipes(
+            @Query("number") int number,
+            @Query("apiKey") String apiKey
+    );
 }

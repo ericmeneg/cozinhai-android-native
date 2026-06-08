@@ -1,152 +1,182 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Home"
-    android:fitsSystemWindows="true"
-    >
+    android:background="@color/white"
+    tools:context=".Home">
 
-
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="223dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="46dp"
-        android:layout_marginBottom="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/recomendacoesText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo" />
+        app:layout_constraintBottom_toTopOf="@+id/bottomNav">
 
-    <TextView
-        android:id="@+id/recomendacoesText"
-        style="@style/text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="76dp"
-        android:text="Recomendações diárias"
-        app:layout_constraintBottom_toTopOf="@+id/cardRecipe1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="24dp">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardRecipe1"
-        android:layout_width="300dp"
-        android:layout_height="120dp"
-        android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/cardRecipe2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-        <include layout="@layout/recipe_card" />
-    </androidx.cardview.widget.CardView>
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="223dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="46dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/logo" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardRecipe2"
-        android:layout_width="300dp"
-        android:layout_height="120dp"
-        android:layout_marginBottom="36dp"
-        app:layout_constraintBottom_toTopOf="@+id/cardRecipe3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
-        app:layout_constraintStart_toStartOf="parent">
+            <TextView
+                android:id="@+id/recomendacoesText"
+                style="@style/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="Recomendações diárias"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/logo" />
 
-        <include layout="@layout/recipe_card" />
-    </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardRecipe1"
+                android:layout_width="320dp"
+                android:layout_height="120dp"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/recomendacoesText">
+                <include layout="@layout/recipe_card" />
+            </androidx.cardview.widget.CardView>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardRecipe3"
-        android:layout_width="300dp"
-        android:layout_height="120dp"
-        android:layout_marginBottom="52dp"
-        app:layout_constraintBottom_toTopOf="@+id/ingredientesText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent">
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardRecipe2"
+                android:layout_width="320dp"
+                android:layout_height="120dp"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardRecipe1">
+                <include layout="@layout/recipe_card" />
+            </androidx.cardview.widget.CardView>
 
-        <include layout="@layout/recipe_card" />
-    </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardRecipe3"
+                android:layout_width="320dp"
+                android:layout_height="120dp"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardRecipe2">
+                <include layout="@layout/recipe_card" />
+            </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/ingredientesText"
-        style="@style/h2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="36dp"
-        android:text="Ingredientes de Época"
-        app:layout_constraintBottom_toTopOf="@+id/selecionarBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/ingredientesText"
+                style="@style/h2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="Ingredientes de Época"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardRecipe3" />
 
-    <Button
-        android:id="@+id/selecionarBtn"
-        style="@style/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
-        android:text="Selecionar o mês"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent" />
+            <Button
+                android:id="@+id/selecionarBtn"
+                style="@style/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Selecionar o mês"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ingredientesText" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="351dp"
-        android:layout_height="47dp"
-        android:layout_marginBottom="44dp"
-        android:orientation="horizontal"
-        android:rotationX="-3"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.509"
-        app:layout_constraintStart_toStartOf="parent">
+            <!-- Seção de ingredientes simplificada para manter o foco no fix -->
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/selecionarBtn">
+                <View android:layout_width="100dp" android:layout_height="100dp" android:background="@color/gray100" android:layout_margin="8dp"/>
+                <View android:layout_width="100dp" android:layout_height="100dp" android:background="@color/gray100" android:layout_margin="8dp"/>
+            </LinearLayout>
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="117dp"
-            android:layout_height="45dp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
-        <Space
-            android:layout_width="115dp"
-            android:layout_height="45dp" />
+    <!-- Barra de Navegação Inferior Customizada -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="117dp"
-            android:layout_height="45dp"
-            android:layout_margin="8dp"
-            />
-    </LinearLayout>
+        <View
+            android:id="@+id/navBackground"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/mainDarkBlue"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="351dp"
-        android:layout_height="47dp"
-        android:layout_marginBottom="8dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        <ImageButton
+            android:id="@+id/btnNavHome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="16dp"
+            android:src="@drawable/ic_home"
+            app:layout_constraintBottom_toBottomOf="@id/navBackground"
+            app:layout_constraintEnd_toStartOf="@+id/btnNavSearch"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/navBackground"
+            app:tint="@color/white" />
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="117dp"
-            android:layout_height="45dp" />
+        <ImageButton
+            android:id="@+id/btnNavProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="16dp"
+            android:src="@drawable/ic_person"
+            app:layout_constraintBottom_toBottomOf="@id/navBackground"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btnNavSearch"
+            app:layout_constraintTop_toTopOf="@id/navBackground"
+            app:tint="@color/white" />
 
-        <Space
-            android:layout_width="115dp"
-            android:layout_height="45dp" />
+        <ImageButton
+            android:id="@+id/btnNavSearch"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:background="@drawable/bg_circle_white"
+            android:elevation="4dp"
+            android:padding="12dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_search_nav"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.3" />
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="117dp"
-            android:layout_height="45dp"
-            android:layout_margin="8dp" />
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
