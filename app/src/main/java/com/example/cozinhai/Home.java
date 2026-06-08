@@ -157,10 +157,12 @@ public class Home extends AppCompatActivity {
     private void setupBottomNavigation() {
         findViewById(R.id.btnNavSearch).setOnClickListener(v -> {
             startActivity(new Intent(this, Search.class));
+            overridePendingTransition(0, 0);
             finish();
         });
         findViewById(R.id.btnNavProfile).setOnClickListener(v -> {
             startActivity(new Intent(this, ProfileActivity.class));
+            overridePendingTransition(0, 0);
             finish();
         });
     }

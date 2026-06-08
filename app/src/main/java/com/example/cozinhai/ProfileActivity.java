@@ -42,6 +42,21 @@ public class ProfileActivity extends AppCompatActivity {
         );
 
         cardLogout.setOnClickListener(v -> logout());
+
+        setupBottomNavigation();
+    }
+
+    private void setupBottomNavigation() {
+        findViewById(R.id.btnNavHome).setOnClickListener(v -> {
+            startActivity(new Intent(this, Home.class));
+            overridePendingTransition(0, 0);
+            finish();
+        });
+        findViewById(R.id.btnNavSearch).setOnClickListener(v -> {
+            startActivity(new Intent(this, Search.class));
+            overridePendingTransition(0, 0);
+            finish();
+        });
     }
 
     private void loadUserData() {

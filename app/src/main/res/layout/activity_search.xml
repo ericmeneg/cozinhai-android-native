@@ -152,7 +152,8 @@
             app:layout_constraintEnd_toStartOf="@+id/btnNavSearch"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/navBackground" />
+            app:layout_constraintTop_toTopOf="@id/navBackground"
+            app:tint="@color/white" />
 
         <ImageButton
             android:id="@+id/btnNavProfile"
@@ -165,19 +166,22 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/btnNavSearch"
-            app:layout_constraintTop_toTopOf="@id/navBackground" />
+            app:layout_constraintTop_toTopOf="@id/navBackground"
+            app:tint="@color/white" />
 
         <ImageButton
             android:id="@+id/btnNavSearch"
-            android:layout_width="44dp"
-            android:layout_height="46dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="@drawable/bg_circle_white"
-            android:elevation="4dp"
-            android:padding="16dp"
+            android:padding="12dp"
             android:scaleType="centerInside"
             android:src="@drawable/ic_search_nav"
-            tools:layout_editor_absoluteX="174dp"
-            tools:layout_editor_absoluteY="21dp" />
+            app:layout_constraintBottom_toBottomOf="@id/navBackground"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/navBackground"
+            app:tint="@color/mainDarkBlue" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

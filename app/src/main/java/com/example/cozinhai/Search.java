@@ -1,5 +1,6 @@
 package com.example.cozinhai;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -71,6 +72,20 @@ public class Search extends AppCompatActivity {
         });
 
         updateSearchMode(true);
+        setupBottomNavigation();
+    }
+
+    private void setupBottomNavigation() {
+        findViewById(R.id.btnNavHome).setOnClickListener(v -> {
+            startActivity(new Intent(this, Home.class));
+            overridePendingTransition(0, 0);
+            finish();
+        });
+        findViewById(R.id.btnNavProfile).setOnClickListener(v -> {
+            startActivity(new Intent(this, ProfileActivity.class));
+            overridePendingTransition(0, 0);
+            finish();
+        });
     }
 
     private void showFilterDialog() {
