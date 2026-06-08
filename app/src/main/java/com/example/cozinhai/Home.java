@@ -6,13 +6,17 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
@@ -20,6 +24,8 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -39,6 +45,13 @@ public class Home extends AppCompatActivity {
 
     private SpoonacularApi spoonacularApi;
     private View card1, card2, card3;
+    private RecyclerView rvSeasonal;
+    private Button selecionarBtn;
+    private int selectedMonth;
+    private final String[] monthNames = {
+            "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+            "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +60,15 @@ public class Home extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
 
+        selectedMonth = Calendar.getInstance().get(Calendar.MONTH) + 1;
+
         setupRetrofit();
         findViews();
         checkDailyRecipes();
         setupBottomNavigation();
+        updateSeasonalDisplay();
+
+        selecionarBtn.setOnClickListener(v -> showMonthPicker());
     }
 
     private void setupRetrofit() {
@@ -65,6 +83,8 @@ public class Home extends AppCompatActivity {
         card1 = findViewById(R.id.cardRecipe1);
         card2 = findViewById(R.id.cardRecipe2);
         card3 = findViewById(R.id.cardRecipe3);
+        rvSeasonal = findViewById(R.id.rvSeasonalIngredients);
+        selecionarBtn = findViewById(R.id.selecionarBtn);
     }
 
     private void checkDailyRecipes() {
@@ -73,7 +93,6 @@ public class Home extends AppCompatActivity {
         String todayDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
         if (todayDate.equals(savedDate)) {
-            // Carrega do cache
             String jsonRecipes = prefs.getString(KEY_RECIPES, null);
             if (jsonRecipes != null) {
                 Gson gson = new Gson();
@@ -83,8 +102,6 @@ public class Home extends AppCompatActivity {
                 return;
             }
         }
-
-        // Se não tiver cache ou for outro dia, busca na API
         fetchRandomRecipes(todayDate);
     }
 
@@ -120,7 +137,6 @@ public class Home extends AppCompatActivity {
 
     private void displayRecipes(List<Recipe> recipes) {
         if (recipes == null || recipes.size() < 3) return;
-
         updateCard(card1, recipes.get(0));
         updateCard(card2, recipes.get(1));
         updateCard(card3, recipes.get(2));
@@ -129,27 +145,51 @@ public class Home extends AppCompatActivity {
     private void updateCard(View card, Recipe recipe) {
         TextView title = card.findViewById(R.id.recipeTitle);
         ImageView image = card.findViewById(R.id.recipeImage);
-
         title.setText(recipe.getTitle());
-        Glide.with(this)
-                .load(recipe.getImage())
-                .centerCrop()
-                .into(image);
+        Glide.with(this).load(recipe.getImage()).centerCrop().into(image);
     }
 
     private void setupBottomNavigation() {
-        findViewById(R.id.btnNavHome).setOnClickListener(v -> {
-            // Já estamos na Home, talvez scroll para o topo?
-        });
-
         findViewById(R.id.btnNavSearch).setOnClickListener(v -> {
             startActivity(new Intent(this, Search.class));
-            finish(); // Opcional, dependendo da UX desejada
+            finish();
         });
-
         findViewById(R.id.btnNavProfile).setOnClickListener(v -> {
             startActivity(new Intent(this, ProfileActivity.class));
             finish();
         });
+    }
+
+    private void updateSeasonalDisplay() {
+        selecionarBtn.setText("Mês Selecionado: " + monthNames[selectedMonth - 1]);
+
+        List<SeasonalIngredient> allIngredients = IngredientData.getIngredients();
+        List<SeasonalIngredient> filtered = new ArrayList<>();
+
+        for (SeasonalIngredient ing : allIngredients) {
+            if (ing.getMeses().contains(selectedMonth)) {
+                filtered.add(ing);
+            }
+        }
+
+        SeasonalIngredientAdapter adapter = new SeasonalIngredientAdapter(filtered);
+        rvSeasonal.setLayoutManager(new GridLayoutManager(this, 3));
+        rvSeasonal.setAdapter(adapter);
+    }
+
+    private void showMonthPicker() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Selecione o mês");
+        
+        String[] displayMonths = new String[12];
+        for(int i=0; i<12; i++) {
+            displayMonths[i] = monthNames[i] + (i + 1 == selectedMonth ? " ✓" : "");
+        }
+
+        builder.setItems(displayMonths, (dialog, which) -> {
+            selectedMonth = which + 1;
+            updateSeasonalDisplay();
+        });
+        builder.show();
     }
 }

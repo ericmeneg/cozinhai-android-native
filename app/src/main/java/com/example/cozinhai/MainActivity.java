@@ -38,23 +38,18 @@ public class MainActivity extends AppCompatActivity {
         TextView cadastroText = findViewById(R.id.cadastroText);
         TextView entrarVisitante = findViewById(R.id.visitanteOption);
 
-        entrarBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, Home.class);
-                startActivity(intent);
-            }
-        });
+        // Configuração do link de cadastro
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            cadastroText.setText(Html.fromHtml(getString(R.string.link_cadastro), Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            cadastroText.setText(Html.fromHtml(getString(R.string.link_cadastro)));
+        }
 
-        cadastroText.setText(
-                Html.fromHtml(getString(R.string.link_cadastro))
-        );
-        entrarVisitante.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, Home.class);
-                startActivity(intent);
-            }
+        // Opção de entrar como visitante
+        entrarVisitante.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, Home.class);
+            startActivity(intent);
+            finish();
         });
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -64,13 +59,13 @@ public class MainActivity extends AppCompatActivity {
 
         AuthApi authApi = retrofit.create(AuthApi.class);
 
+        // Botão entrar com validação de login via API
         entrarBtn.setOnClickListener(view -> {
             String email = emailInput.getText().toString().trim();
             String password = passwordInput.getText().toString().trim();
 
             if (email.isEmpty() || password.isEmpty() ){
                 Toast.makeText(MainActivity.this, "Preencha todos os campos", Toast.LENGTH_SHORT).show();
-                Log.d("LOGIN", "Campo email ou senha vazio(s)");
                 return;
             }
 
@@ -78,20 +73,15 @@ public class MainActivity extends AppCompatActivity {
 
             authApi.login(request).enqueue(new Callback<LoginResponse>(){
                 @Override
-                public void onResponse(
-                        Call<LoginResponse> call,
-                        Response<LoginResponse> response
-                ) {
+                public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                     if (response.isSuccessful() && response.body() != null) {
-                        String token = response.body().getAccessTokenData().getToken();
-                        Log.d("LOGIN", "Sucesso! Token: " + token);
+                        Log.d("LOGIN", "Sucesso!");
                         Toast.makeText(MainActivity.this, "Login realizado com sucesso!", Toast.LENGTH_SHORT).show();
                         
                         Intent intent = new Intent(MainActivity.this, Home.class);
                         startActivity(intent);
                         finish();
                     } else {
-                        Log.d("LOGIN", "Erro no login. Código: " + response.code());
                         Toast.makeText(MainActivity.this, "E-mail ou senha incorretos", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -103,13 +93,5 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         });
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            cadastroText.setText(Html.fromHtml(getString(R.string.link_cadastro), Html.FROM_HTML_MODE_LEGACY));
-        } else {
-            @SuppressWarnings("deprecation")
-            android.text.Spanned result = Html.fromHtml(getString(R.string.link_cadastro));
-            cadastroText.setText(result);
-        }
     }
 }
