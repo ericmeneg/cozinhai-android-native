@@ -19,7 +19,10 @@ public class SeasonalIngredient {
         this.slug = slug;
     }
 
+    public String getId() { return id; }
     public String getNome() { return nome; }
-    public List<Integer> getMeses() { return meses; }
+    public String getIcone() { return icone; }
     public String getCategoria() { return categoria; }
+    public List<Integer> getMeses() { return meses; }
+    public String getSlug() { return slug; }
 }

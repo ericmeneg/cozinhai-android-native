@@ -24,10 +24,21 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
 
     private static final String BASE_URL = "https://pi-3sem-backend.onrender.com/";
+    private static final String PREFS_NAME = "CozinhaAiPrefs";
+    private static final String KEY_IS_LOGGED_IN = "is_logged_in";
+    private static final String KEY_USER_NAME = "user_name";
+    private static final String KEY_USER_EMAIL = "user_email";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Verifica se o usuário já está logado ANTES de carregar o layout
+        if (isUserLoggedIn()) {
+            goToHome();
+            return;
+        }
+
         EdgeToEdge.enable(this);
         setContentView(R.layout.main_activity);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
@@ -76,11 +87,24 @@ public class MainActivity extends AppCompatActivity {
                 public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                     if (response.isSuccessful() && response.body() != null) {
                         Log.d("LOGIN", "Sucesso!");
-                        Toast.makeText(MainActivity.this, "Login realizado com sucesso!", Toast.LENGTH_SHORT).show();
                         
-                        Intent intent = new Intent(MainActivity.this, Home.class);
-                        startActivity(intent);
-                        finish();
+                        LoginResponse loginResponse = response.body();
+                        String userName = "";
+                        String userEmail = "";
+
+                        if (loginResponse.getUser() != null) {
+                            userName = loginResponse.getUser().getName();
+                            userEmail = loginResponse.getUser().getEmail();
+                        } else if (loginResponse.getAccessTokenData() != null && loginResponse.getAccessTokenData().getUser() != null) {
+                            userName = loginResponse.getAccessTokenData().getUser().getName();
+                            userEmail = loginResponse.getAccessTokenData().getUser().getEmail();
+                        }
+
+                        // Salva o estado de login e dados do usuário
+                        saveLoginState(true, userName, userEmail);
+                        
+                        Toast.makeText(MainActivity.this, "Login realizado com sucesso!", Toast.LENGTH_SHORT).show();
+                        goToHome();
                     } else {
                         Toast.makeText(MainActivity.this, "E-mail ou senha incorretos", Toast.LENGTH_SHORT).show();
                     }
@@ -93,5 +117,25 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         });
+    }
+
+    private boolean isUserLoggedIn() {
+        return getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+                .getBoolean(KEY_IS_LOGGED_IN, false);
+    }
+
+    private void saveLoginState(boolean loggedIn, String name, String email) {
+        getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+                .edit()
+                .putBoolean(KEY_IS_LOGGED_IN, loggedIn)
+                .putString(KEY_USER_NAME, name)
+                .putString(KEY_USER_EMAIL, email)
+                .apply();
+    }
+
+    private void goToHome() {
+        Intent intent = new Intent(MainActivity.this, Home.class);
+        startActivity(intent);
+        finish();
     }
 }

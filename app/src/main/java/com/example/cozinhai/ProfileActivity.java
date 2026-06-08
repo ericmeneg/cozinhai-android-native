@@ -1,6 +1,7 @@
 package com.example.cozinhai;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -9,6 +10,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 public class ProfileActivity extends AppCompatActivity {
+
+    private static final String PREFS_NAME = "CozinhaAiPrefs";
+    private static final String KEY_IS_LOGGED_IN = "is_logged_in";
+    private static final String KEY_USER_NAME = "user_name";
+    private static final String KEY_USER_EMAIL = "user_email";
 
     private TextView txtUserName, txtUserEmail;
     private CardView cardChangePassword, cardViewComments, cardViewSavedRecipes, cardLogout;
@@ -27,47 +33,37 @@ public class ProfileActivity extends AppCompatActivity {
         cardViewSavedRecipes = findViewById(R.id.cardViewSavedRecipes);
         cardLogout = findViewById(R.id.cardLogout);
 
-        // 2. Resgatar dados enviados pela tela de Login
-        Intent intent = getIntent();
-        if (intent != null && intent.hasExtra("USER_NAME")) {
-            String name = intent.getStringExtra("USER_NAME");
-            String email = intent.getStringExtra("USER_EMAIL");
-
-            txtUserName.setText(name);
-            txtUserEmail.setText(email);
-        }
+        // 2. Carregar dados salvos
+        loadUserData();
 
         // 3. Configurar os cliques dos Cards
-        cardChangePassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(ProfileActivity.this, "Abrir Alterar Senha", Toast.LENGTH_SHORT).show();
-            }
-        });
+        cardChangePassword.setOnClickListener(v -> 
+            Toast.makeText(ProfileActivity.this, "Recurso em desenvolvimento", Toast.LENGTH_SHORT).show()
+        );
 
-        cardViewComments.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Navegar para tela de comentários
-            }
-        });
+        cardLogout.setOnClickListener(v -> logout());
+    }
 
-        cardViewSavedRecipes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Navegar para tela de receitas salvas
-            }
-        });
+    private void loadUserData() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        String name = prefs.getString(KEY_USER_NAME, "Usuário");
+        String email = prefs.getString(KEY_USER_EMAIL, "usuario@email.com");
 
-        cardLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Lógica de Logout: Volta para a MainActivity (Login) limpando o histórico
-                Intent logoutIntent = new Intent(ProfileActivity.this, MainActivity.class);
-                logoutIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(logoutIntent);
-                finish();
-            }
-        });
+        txtUserName.setText(name);
+        txtUserEmail.setText(email);
+    }
+
+    private void logout() {
+        // Limpa as preferências (Remove o estado de login e dados do usuário)
+        getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+                .edit()
+                .clear()
+                .apply();
+
+        // Volta para a MainActivity (Login) limpando o histórico de telas
+        Intent logoutIntent = new Intent(ProfileActivity.this, MainActivity.class);
+        logoutIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(logoutIntent);
+        finish();
     }
 }

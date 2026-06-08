@@ -85,6 +85,11 @@ public class Home extends AppCompatActivity {
         card3 = findViewById(R.id.cardRecipe3);
         rvSeasonal = findViewById(R.id.rvSeasonalIngredients);
         selecionarBtn = findViewById(R.id.selecionarBtn);
+
+        // Configuração fixa do RecyclerView para evitar problemas de layout
+        rvSeasonal.setLayoutManager(new GridLayoutManager(this, 3));
+        rvSeasonal.setNestedScrollingEnabled(false);
+        rvSeasonal.setHasFixedSize(false);
     }
 
     private void checkDailyRecipes() {
@@ -173,7 +178,6 @@ public class Home extends AppCompatActivity {
         }
 
         SeasonalIngredientAdapter adapter = new SeasonalIngredientAdapter(filtered);
-        rvSeasonal.setLayoutManager(new GridLayoutManager(this, 3));
         rvSeasonal.setAdapter(adapter);
     }
 
