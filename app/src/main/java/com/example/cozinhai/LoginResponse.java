@@ -33,10 +33,14 @@ public class LoginResponse {
         private String email;
         private String name;
 
+        @SerializedName("favoriteRecipes")
+        private java.util.List<Recipe> favoriteRecipes;
+
         public String getId() { 
             return id;
         }
         public String getEmail() { return email; }
         public String getName() { return name; }
+        public java.util.List<Recipe> getFavoriteRecipes() { return favoriteRecipes; }
     }
 }

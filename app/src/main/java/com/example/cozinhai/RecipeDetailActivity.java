@@ -64,7 +64,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
         etComment = findViewById(R.id.etComment);
         btnSubmit = findViewById(R.id.btnSubmit);
 
-        btnSave.setOnClickListener(v -> saveToFavorites());
+        btnSave.setOnClickListener(v -> toggleFavorite());
         btnSubmit.setOnClickListener(v -> submitRating());
     }
 
@@ -111,6 +111,14 @@ public class RecipeDetailActivity extends AppCompatActivity {
         });
     }
 
+    private void toggleFavorite() {
+        if ("favorited".equals(btnSave.getTag())) {
+            removeFromFavorites();
+        } else {
+            saveToFavorites();
+        }
+    }
+
     private void saveToFavorites() {
         android.content.SharedPreferences prefs = getSharedPreferences("CozinhaAiPrefs", MODE_PRIVATE);
         String userId = prefs.getString("user_id", "");
@@ -128,22 +136,66 @@ public class RecipeDetailActivity extends AppCompatActivity {
         FavoriteRequest request = new FavoriteRequest(String.valueOf(recipeId), recipeTitle, recipeImage);
 
         AuthApi authApi = NetworkClient.getAuthApi();
-        authApi.addFavorite(userId, "Bearer " + token, request).enqueue(new Callback<Void>() {
+        String authHeader = "Bearer " + token;
+
+        authApi.addFavorite(userId, authHeader, request).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(RecipeDetailActivity.this, "Receita salva nos favoritos!", Toast.LENGTH_SHORT).show();
-                    btnSave.setImageResource(android.R.drawable.btn_star_big_on);
+                    handleFavoriteSuccess();
                 } else {
-                    Log.e("FAVORITES", "Erro ao salvar: " + response.code());
-                    Toast.makeText(RecipeDetailActivity.this, "Erro ao salvar favorito", Toast.LENGTH_SHORT).show();
+                    handleFavoriteError(response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Log.e("FAVORITES", "Falha na conexão", t);
-                Toast.makeText(RecipeDetailActivity.this, "Falha na conexão", Toast.LENGTH_SHORT).show();
+                handleFavoriteFailure(t);
+            }
+        });
+    }
+
+    private void handleFavoriteSuccess() {
+        Toast.makeText(RecipeDetailActivity.this, "Receita salva nos favoritos!", Toast.LENGTH_SHORT).show();
+        btnSave.setImageResource(android.R.drawable.btn_star_big_on);
+        btnSave.setTag("favorited");
+    }
+
+    private void handleFavoriteError(int code) {
+        Log.e("FAVORITES", "Erro ao salvar: " + code);
+        Toast.makeText(RecipeDetailActivity.this, "Erro ao salvar favorito (" + code + ")", Toast.LENGTH_SHORT).show();
+    }
+
+    private void handleFavoriteFailure(Throwable t) {
+        Log.e("FAVORITES", "Falha na conexão", t);
+        Toast.makeText(RecipeDetailActivity.this, "Falha na conexão", Toast.LENGTH_SHORT).show();
+    }
+
+    private void removeFromFavorites() {
+        android.content.SharedPreferences prefs = getSharedPreferences("CozinhaAiPrefs", MODE_PRIVATE);
+        String userId = prefs.getString("user_id", "");
+        String token = prefs.getString("access_token", "");
+
+        if (userId.isEmpty() || token.isEmpty()) return;
+
+        int recipeId = getIntent().getIntExtra("RECIPE_ID", -1);
+
+        AuthApi authApi = NetworkClient.getAuthApi();
+        authApi.removeFavorite(userId, String.valueOf(recipeId), "Bearer " + token).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(RecipeDetailActivity.this, "Receita removida dos favoritos", Toast.LENGTH_SHORT).show();
+                    btnSave.setImageResource(android.R.drawable.btn_star_big_off);
+                    btnSave.setTag("not_favorited");
+                } else {
+                    Log.e("FAVORITES", "Erro ao remover: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("FAVORITES", "Falha na conexão ao remover", t);
             }
         });
     }
