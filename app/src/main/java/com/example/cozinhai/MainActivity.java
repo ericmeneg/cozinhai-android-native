@@ -64,7 +64,21 @@ public class MainActivity extends AppCompatActivity {
             finish();
         });
 
+<<<<<<< HEAD
         AuthApi authApi = NetworkClient.getAuthApi();
+=======
+        cadastroText.setOnClickListener(v->{
+            startActivity(new Intent(MainActivity.this, Cadastro.class));
+            finish();
+        });
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        AuthApi authApi = retrofit.create(AuthApi.class);
+>>>>>>> 2b51aef84b2b6d3227dda0a11e71cf09cd5a6e0e
 
         // Botão entrar com validação de login via API
         entrarBtn.setOnClickListener(view -> {
