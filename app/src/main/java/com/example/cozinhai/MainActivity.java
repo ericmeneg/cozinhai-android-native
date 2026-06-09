@@ -18,8 +18,6 @@ import android.widget.Toast;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,6 +55,11 @@ public class MainActivity extends AppCompatActivity {
             cadastroText.setText(Html.fromHtml(getString(R.string.link_cadastro)));
         }
 
+        cadastroText.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, Cadastro.class));
+            finish();
+        });
+
         // Opção de entrar como visitante
         entrarVisitante.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, Home.class);
@@ -64,21 +67,7 @@ public class MainActivity extends AppCompatActivity {
             finish();
         });
 
-<<<<<<< HEAD
         AuthApi authApi = NetworkClient.getAuthApi();
-=======
-        cadastroText.setOnClickListener(v->{
-            startActivity(new Intent(MainActivity.this, Cadastro.class));
-            finish();
-        });
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        AuthApi authApi = retrofit.create(AuthApi.class);
->>>>>>> 2b51aef84b2b6d3227dda0a11e71cf09cd5a6e0e
 
         // Botão entrar com validação de login via API
         entrarBtn.setOnClickListener(view -> {

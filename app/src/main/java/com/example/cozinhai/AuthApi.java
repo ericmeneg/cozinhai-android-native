@@ -15,7 +15,7 @@ public interface AuthApi {
     @POST("auth/login")
     Call<LoginResponse> login(@Body LoginRequest request);
 
-<<<<<<< HEAD
+
     @PATCH("user/{id}/password")
     Call<Void> changePassword(
         @Path("id") String userId,
@@ -42,8 +42,7 @@ public interface AuthApi {
         @Header("Authorization") String token,
         @Body RatingRequest request
     );
-=======
+
     @POST("user")
     Call<GenericResponse> signup(@Body UserRequest request);
->>>>>>> 2b51aef84b2b6d3227dda0a11e71cf09cd5a6e0e
 }
