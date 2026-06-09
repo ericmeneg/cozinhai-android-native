@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SigninScreen">
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="223dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="72dp"
+        app:layout_constraintBottom_toTopOf="@+id/cadastreSeText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.173"
+        app:srcCompat="@drawable/logo" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutNome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayoutEmail"
+        tools:layout_editor_absoluteX="53dp">
+
+        <TextView
+            android:id="@+id/nameLabelText"
+            style="@style/h2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nome"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.154"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="290dp" />
+
+        <EditText
+            android:id="@+id/nameInput"
+            style="@style/input"
+            android:layout_width="294dp"
+            android:layout_height="42dp"
+            android:ems="10"
+            android:inputType="textEmailAddress"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.461"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="325dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayoutSenha"
+        tools:layout_editor_absoluteX="53dp">
+
+        <TextView
+            android:id="@+id/emailLabelText"
+            style="@style/h2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.153"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="389dp" />
+
+        <EditText
+            android:id="@+id/emailInput"
+            style="@style/input"
+            android:layout_width="294dp"
+            android:layout_height="42dp"
+            android:ems="10"
+            android:inputType="textEmailAddress"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.461"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="424dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutSenha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="53dp"
+        tools:layout_editor_absoluteY="489dp">
+
+        <TextView
+            android:id="@+id/senhaLabelText"
+            style="@style/h2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Senha"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.153"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="499dp" />
+
+        <EditText
+            android:id="@+id/senhaInput"
+            style="@style/input"
+            android:layout_width="294dp"
+            android:layout_height="42dp"
+            android:ems="10"
+            android:inputType="textEmailAddress"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.461"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="534dp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/cadastreSeText"
+        style="@style/h1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="52dp"
+        android:text="Faça seu cadastro"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayoutNome"
+        tools:layout_editor_absoluteX="48dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
