@@ -63,6 +63,11 @@ public class MainActivity extends AppCompatActivity {
             finish();
         });
 
+        cadastroText.setOnClickListener(v->{
+            startActivity(new Intent(MainActivity.this, Cadastro.class));
+            finish();
+        });
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
