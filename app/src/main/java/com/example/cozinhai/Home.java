@@ -86,7 +86,6 @@ public class Home extends AppCompatActivity {
         rvSeasonal = findViewById(R.id.rvSeasonalIngredients);
         selecionarBtn = findViewById(R.id.selecionarBtn);
 
-        // Configuração fixa do RecyclerView para evitar problemas de layout
         rvSeasonal.setLayoutManager(new GridLayoutManager(this, 3));
         rvSeasonal.setNestedScrollingEnabled(false);
         rvSeasonal.setHasFixedSize(false);
@@ -152,6 +151,12 @@ public class Home extends AppCompatActivity {
         ImageView image = card.findViewById(R.id.recipeImage);
         title.setText(recipe.getTitle());
         Glide.with(this).load(recipe.getImage()).centerCrop().into(image);
+
+        card.findViewById(R.id.btnViewRecipe).setOnClickListener(v -> {
+            Intent intent = new Intent(this, RecipeDetailActivity.class);
+            intent.putExtra("RECIPE_ID", recipe.getId());
+            startActivity(intent);
+        });
     }
 
     private void setupBottomNavigation() {

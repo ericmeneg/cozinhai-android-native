@@ -3,9 +3,17 @@ package com.example.cozinhai;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface SpoonacularApi {
+    // Busca detalhes da receita por ID
+    @GET("recipes/{id}/information")
+    Call<RecipeDetailResponse> getRecipeInformation(
+            @Path("id") int id,
+            @Query("apiKey") String apiKey
+    );
+
     // Busca por ingredientes
     @GET("recipes/findByIngredients")
     Call<List<Recipe>> findByIngredients(
