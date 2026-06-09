@@ -34,7 +34,7 @@ public class Cadastro extends AppCompatActivity {
     private AuthApi authApi;
 
     private EditText nameInput, emailInput, passwordInput, passwordConfirm;
-    private TextView reqLength, reqUpper, reqLower, reqNumber, reqSymbol;
+    private TextView reqLength, reqUpper, reqLower, reqNumber, reqSymbol, entrarVisitante;
     private Button cadastrarBtn;
     private ProgressBar progressBar;
 
@@ -101,6 +101,13 @@ public class Cadastro extends AppCompatActivity {
         });
 
         cadastrarBtn.setOnClickListener(v -> attemptSignup());
+
+        entrarVisitante = findViewById(R.id.visitanteOption);
+        entrarVisitante.setOnClickListener(v -> {
+            Intent intent = new Intent(Cadastro.this, Home.class);
+            startActivity(intent);
+            finish();
+        });
     }
 
     private void validatePasswordRequirements(String password) {
