@@ -13,6 +13,7 @@
         android:roundIcon="@drawable/logoicon"
         android:theme="@style/Theme.CozinhaAi">
         <activity
+            android:name=".Cadastro"
             android:name=".SigninScreen"
             android:exported="false" />
         <activity
