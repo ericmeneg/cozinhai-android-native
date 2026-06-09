@@ -5,15 +5,19 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +33,9 @@ public class Search extends AppCompatActivity {
     private Button btnByIngredient, btnByTitle, btnSearchAction;
     private ImageButton btnFilterIcon;
     private EditText editSearch;
+    private TextView txtStatus;
+    private RecyclerView recyclerSearchResults;
+    private RecipeAdapter adapter;
     private boolean isSearchingByIngredient = true;
 
     private final String[] filterOptions = {"Sem Lactose", "Sem Gluten", "Light", "Vegetariano", "Vegano"};
@@ -44,18 +51,18 @@ public class Search extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_search);
 
-        // Inicializa o Retrofit
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.spoonacular.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        spoonacularApi = retrofit.create(SpoonacularApi.class);
+        // Inicializa o Retrofit via NetworkClient
+        spoonacularApi = NetworkClient.getSpoonacularApi();
 
         btnByIngredient = findViewById(R.id.btnByIngredient);
         btnByTitle = findViewById(R.id.btnByTitle);
         btnSearchAction = findViewById(R.id.btnSearchAction);
         btnFilterIcon = findViewById(R.id.btnFilterIcon);
         editSearch = findViewById(R.id.editSearch);
+        txtStatus = findViewById(R.id.txtStatus);
+        recyclerSearchResults = findViewById(R.id.recyclerSearchResults);
+
+        setupRecyclerView();
 
         btnByIngredient.setOnClickListener(v -> updateSearchMode(true));
         btnByTitle.setOnClickListener(v -> updateSearchMode(false));
@@ -73,6 +80,16 @@ public class Search extends AppCompatActivity {
 
         updateSearchMode(true);
         setupBottomNavigation();
+    }
+
+    private void setupRecyclerView() {
+        adapter = new RecipeAdapter(recipe -> {
+            Intent intent = new Intent(Search.this, RecipeDetailActivity.class);
+            intent.putExtra("RECIPE_ID", recipe.getId());
+            startActivity(intent);
+        });
+        recyclerSearchResults.setLayoutManager(new LinearLayoutManager(this));
+        recyclerSearchResults.setAdapter(adapter);
     }
 
     private void setupBottomNavigation() {
@@ -154,19 +171,22 @@ public class Search extends AppCompatActivity {
         // "Light" (index 2) não possui mapeamento direto simples no complexSearch sem parâmetros extras de calorias.
 
         if (isSearchingByIngredient) {
-            // Busca por ingredientes (Note: findByIngredients não suporta diet/intolerances diretamente)
-            // Para suportar filtros, o ideal seria usar complexSearch com includeIngredients
+            // Busca por ingredientes
             spoonacularApi.findByIngredients(query, 10, API_KEY).enqueue(new Callback<List<Recipe>>() {
                 @Override
                 public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
                     if (response.isSuccessful() && response.body() != null) {
-                        Log.d("SearchAPI", "Ingredientes encontrados: " + response.body().size());
+                        List<Recipe> results = response.body();
+                        updateUI(results);
+                    } else {
+                        updateUI(new ArrayList<>());
                     }
                 }
 
                 @Override
                 public void onFailure(Call<List<Recipe>> call, Throwable t) {
                     Toast.makeText(Search.this, "Erro na busca", Toast.LENGTH_SHORT).show();
+                    updateUI(new ArrayList<>());
                 }
             });
         } else {
@@ -175,15 +195,30 @@ public class Search extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<RecipeSearchResponse> call, Response<RecipeSearchResponse> response) {
                     if (response.isSuccessful() && response.body() != null) {
-                        Log.d("SearchAPI", "Títulos encontrados: " + response.body().getResults().size());
+                        List<Recipe> results = response.body().getResults();
+                        updateUI(results);
+                    } else {
+                        updateUI(new ArrayList<>());
                     }
                 }
 
                 @Override
                 public void onFailure(Call<RecipeSearchResponse> call, Throwable t) {
                     Toast.makeText(Search.this, "Erro na busca", Toast.LENGTH_SHORT).show();
+                    updateUI(new ArrayList<>());
                 }
             });
+        }
+    }
+
+    private void updateUI(List<Recipe> recipes) {
+        if (recipes.isEmpty()) {
+            txtStatus.setVisibility(View.VISIBLE);
+            recyclerSearchResults.setVisibility(View.GONE);
+        } else {
+            txtStatus.setVisibility(View.GONE);
+            recyclerSearchResults.setVisibility(View.VISIBLE);
+            adapter.setRecipes(recipes);
         }
     }
 }

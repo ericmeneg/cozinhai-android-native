@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -25,6 +27,9 @@ public class RecipeDetailActivity extends AppCompatActivity {
     private ImageView ivRecipeImage;
     private TextView tvRecipeTitle, tvServings, tvReadyTime, tvIngredients, tvInstructions;
     private ImageButton btnBack, btnSave;
+    private android.widget.RatingBar ratingBar;
+    private android.widget.EditText etComment;
+    private android.widget.Button btnSubmit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
         int recipeId = getIntent().getIntExtra("RECIPE_ID", -1);
         if (recipeId != -1) {
             fetchRecipeDetails(recipeId);
+            checkIfFavorite(recipeId);
         } else {
             Toast.makeText(this, "Erro ao carregar ID da receita", Toast.LENGTH_SHORT).show();
             finish();
@@ -54,14 +60,125 @@ public class RecipeDetailActivity extends AppCompatActivity {
         tvInstructions = findViewById(R.id.tvInstructions);
         btnBack = findViewById(R.id.btnBack);
         btnSave = findViewById(R.id.btnSave);
+        ratingBar = findViewById(R.id.ratingBar);
+        etComment = findViewById(R.id.etComment);
+        btnSubmit = findViewById(R.id.btnSubmit);
+
+        btnSave.setOnClickListener(v -> saveToFavorites());
+        btnSubmit.setOnClickListener(v -> submitRating());
+    }
+
+    private void submitRating() {
+        android.content.SharedPreferences prefs = getSharedPreferences("CozinhaAiPrefs", MODE_PRIVATE);
+        String userId = prefs.getString("user_id", "");
+        String token = prefs.getString("access_token", "");
+
+        if (userId.isEmpty() || token.isEmpty()) {
+            Toast.makeText(this, "Faça login para avaliar", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        int recipeId = getIntent().getIntExtra("RECIPE_ID", -1);
+        float grade = ratingBar.getRating();
+        String comment = etComment.getText().toString();
+
+        if (grade == 0) {
+            Toast.makeText(this, "Por favor, dê uma nota", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        RatingRequest request = new RatingRequest(String.valueOf(recipeId), grade, comment);
+
+        AuthApi authApi = NetworkClient.getAuthApi();
+        authApi.rateRecipe(userId, "Bearer " + token, request).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(RecipeDetailActivity.this, "Avaliação enviada com sucesso!", Toast.LENGTH_SHORT).show();
+                    etComment.setText("");
+                    ratingBar.setRating(0);
+                } else {
+                    Log.e("RATINGS", "Erro ao avaliar: " + response.code());
+                    Toast.makeText(RecipeDetailActivity.this, "Erro ao enviar avaliação", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("RATINGS", "Falha na conexão", t);
+                Toast.makeText(RecipeDetailActivity.this, "Falha na conexão", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void saveToFavorites() {
+        android.content.SharedPreferences prefs = getSharedPreferences("CozinhaAiPrefs", MODE_PRIVATE);
+        String userId = prefs.getString("user_id", "");
+        String token = prefs.getString("access_token", "");
+
+        if (userId.isEmpty() || token.isEmpty()) {
+            Toast.makeText(this, "Faça login para salvar favoritos", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        int recipeId = getIntent().getIntExtra("RECIPE_ID", -1);
+        String recipeTitle = tvRecipeTitle.getText().toString();
+        String recipeImage = currentRecipe != null ? currentRecipe.getImage() : "";
+        
+        FavoriteRequest request = new FavoriteRequest(String.valueOf(recipeId), recipeTitle, recipeImage);
+
+        AuthApi authApi = NetworkClient.getAuthApi();
+        authApi.addFavorite(userId, "Bearer " + token, request).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(RecipeDetailActivity.this, "Receita salva nos favoritos!", Toast.LENGTH_SHORT).show();
+                    btnSave.setImageResource(android.R.drawable.btn_star_big_on);
+                } else {
+                    Log.e("FAVORITES", "Erro ao salvar: " + response.code());
+                    Toast.makeText(RecipeDetailActivity.this, "Erro ao salvar favorito", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("FAVORITES", "Falha na conexão", t);
+                Toast.makeText(RecipeDetailActivity.this, "Falha na conexão", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void checkIfFavorite(int recipeId) {
+        android.content.SharedPreferences prefs = getSharedPreferences("CozinhaAiPrefs", MODE_PRIVATE);
+        String userId = prefs.getString("user_id", "");
+        String token = prefs.getString("access_token", "");
+
+        if (userId.isEmpty() || token.isEmpty()) return;
+
+        AuthApi authApi = NetworkClient.getAuthApi();
+        authApi.getFavorites(userId, "Bearer " + token).enqueue(new Callback<List<Recipe>>() {
+            @Override
+            public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    for (Recipe recipe : response.body()) {
+                        if (recipe.getId() == recipeId) {
+                            btnSave.setImageResource(android.R.drawable.btn_star_big_on);
+                            btnSave.setTag("favorited");
+                            break;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Recipe>> call, Throwable t) {
+                Log.e("FAVORITES", "Erro ao carregar favoritos", t);
+            }
+        });
     }
 
     private void setupRetrofit() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.spoonacular.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        spoonacularApi = retrofit.create(SpoonacularApi.class);
+        spoonacularApi = NetworkClient.getSpoonacularApi();
     }
 
     private void fetchRecipeDetails(int id) {
@@ -83,7 +200,10 @@ public class RecipeDetailActivity extends AppCompatActivity {
         });
     }
 
+    private RecipeDetailResponse currentRecipe;
+
     private void displayRecipeDetails(RecipeDetailResponse recipe) {
+        this.currentRecipe = recipe;
         tvRecipeTitle.setText(recipe.getTitle());
         tvServings.setText("Serve " + recipe.getServings() + " Pessoas");
         tvReadyTime.setText("Pronto em " + recipe.getReadyInMinutes() + " Minutos");

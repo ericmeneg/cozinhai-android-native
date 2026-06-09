@@ -72,11 +72,7 @@ public class Home extends AppCompatActivity {
     }
 
     private void setupRetrofit() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.spoonacular.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        spoonacularApi = retrofit.create(SpoonacularApi.class);
+        spoonacularApi = NetworkClient.getSpoonacularApi();
     }
 
     private void findViews() {

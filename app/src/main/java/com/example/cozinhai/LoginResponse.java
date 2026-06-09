@@ -9,8 +9,8 @@ public class LoginResponse {
 
     private User user;
 
-    public AccessTokenData getAccessTokenData() {
-        return accessTokenData;
+    public String getAccessToken() {
+        return accessTokenData != null ? accessTokenData.getAccessToken() : null;
     }
 
     public User getUser() {
@@ -19,39 +19,24 @@ public class LoginResponse {
 
     public static class AccessTokenData {
         @SerializedName("access_token")
-        private String token;
+        private String accessToken;
 
-        private User user;
-
-        public String getToken() {
-            return token;
-        }
-
-        public User getUser() {
-            return user;
+        public String getAccessToken() {
+            return accessToken;
         }
     }
 
     public static class User {
+        @SerializedName(value = "id", alternate = {"_id"})
         private String id;
+
         private String email;
         private String name;
-        private boolean status;
 
-        public String getId() {
+        public String getId() { 
             return id;
         }
-
-        public String getEmail() {
-            return email;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public boolean isStatus() {
-            return status;
-        }
+        public String getEmail() { return email; }
+        public String getName() { return name; }
     }
 }

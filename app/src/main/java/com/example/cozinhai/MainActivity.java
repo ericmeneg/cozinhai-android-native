@@ -23,11 +23,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String BASE_URL = "https://pi-3sem-backend.onrender.com/";
     private static final String PREFS_NAME = "CozinhaAiPrefs";
     private static final String KEY_IS_LOGGED_IN = "is_logged_in";
     private static final String KEY_USER_NAME = "user_name";
     private static final String KEY_USER_EMAIL = "user_email";
+    private static final String KEY_USER_ID = "user_id";
+    private static final String KEY_ACCESS_TOKEN = "access_token";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,12 +64,7 @@ public class MainActivity extends AppCompatActivity {
             finish();
         });
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        AuthApi authApi = retrofit.create(AuthApi.class);
+        AuthApi authApi = NetworkClient.getAuthApi();
 
         // Botão entrar com validação de login via API
         entrarBtn.setOnClickListener(view -> {
@@ -86,26 +82,38 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                     if (response.isSuccessful() && response.body() != null) {
-                        Log.d("LOGIN", "Sucesso!");
+                        Log.d("LOGIN", "Sucesso ao receber resposta");
                         
                         LoginResponse loginResponse = response.body();
+                        String token = loginResponse.getAccessToken();
                         String userName = "";
                         String userEmail = "";
+                        String userId = "";
 
                         if (loginResponse.getUser() != null) {
                             userName = loginResponse.getUser().getName();
                             userEmail = loginResponse.getUser().getEmail();
-                        } else if (loginResponse.getAccessTokenData() != null && loginResponse.getAccessTokenData().getUser() != null) {
-                            userName = loginResponse.getAccessTokenData().getUser().getName();
-                            userEmail = loginResponse.getAccessTokenData().getUser().getEmail();
+                            userId = loginResponse.getUser().getId();
+                            
+                            // Log para depuração se o ID vier vazio
+                            if (userId == null || userId.isEmpty()) {
+                                Log.e("LOGIN", "AVISO: userId veio vazio do objeto user!");
+                            }
+                        }
+
+                        if (token == null || token.isEmpty()) {
+                            Log.e("LOGIN", "Token veio vazio do servidor!");
+                            Toast.makeText(MainActivity.this, "Erro interno: Token não recebido", Toast.LENGTH_SHORT).show();
+                            return;
                         }
 
                         // Salva o estado de login e dados do usuário
-                        saveLoginState(true, userName, userEmail);
+                        saveLoginState(true, userName, userEmail, userId, token);
                         
                         Toast.makeText(MainActivity.this, "Login realizado com sucesso!", Toast.LENGTH_SHORT).show();
                         goToHome();
                     } else {
+                        Log.e("LOGIN", "Erro no login. Código: " + response.code());
                         Toast.makeText(MainActivity.this, "E-mail ou senha incorretos", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -124,12 +132,14 @@ public class MainActivity extends AppCompatActivity {
                 .getBoolean(KEY_IS_LOGGED_IN, false);
     }
 
-    private void saveLoginState(boolean loggedIn, String name, String email) {
+    private void saveLoginState(boolean loggedIn, String name, String email, String id, String token) {
         getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
                 .edit()
                 .putBoolean(KEY_IS_LOGGED_IN, loggedIn)
                 .putString(KEY_USER_NAME, name)
                 .putString(KEY_USER_EMAIL, email)
+                .putString(KEY_USER_ID, id)
+                .putString(KEY_ACCESS_TOKEN, token)
                 .apply();
     }
 

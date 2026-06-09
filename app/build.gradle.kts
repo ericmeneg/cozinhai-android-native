@@ -39,6 +39,7 @@ dependencies {
     implementation(libs.cardview)
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson)
+    implementation(libs.okhttp.logging)
     implementation("com.github.bumptech.glide:glide:4.16.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
