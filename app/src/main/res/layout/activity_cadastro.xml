@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="?android:attr/colorBackground">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        tools:context=".Cadastro">
+
+        <ImageView
+            android:id="@+id/mainLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/bemVindoText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:srcCompat="@drawable/logo" />
+
+        <TextView
+            android:id="@+id/bemVindoText"
+            style="@style/h1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:text="Ainda não é cadastrado(a)?"
+            android:textSize="24sp"
+            android:gravity="center"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/entreText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mainLogo" />
+
+        <TextView
+            android:id="@+id/entreText"
+            style="@style/h3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="8dp"
+            android:paddingHorizontal="16dp"
+            android:text="É muito simples, vamos precisar de:"
+            android:gravity="center"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/nameInput"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bemVindoText" />
+
+        <EditText
+            android:id="@+id/nameInput"
+            style="@style/input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:ems="10"
+            android:hint="seu nome"
+            android:inputType="textPersonName"
+            app:layout_constraintBottom_toTopOf="@+id/emailInput"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/entreText" />
+
+        <EditText
+            android:id="@+id/emailInput"
+            style="@style/input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:ems="10"
+            android:hint="um e-mail"
+            android:inputType="textEmailAddress"
+            app:layout_constraintBottom_toTopOf="@+id/passwordInput"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nameInput" />
+
+        <EditText
+            android:id="@+id/passwordInput"
+            style="@style/input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:ems="10"
+            android:hint="uma senha"
+            android:inputType="textPassword"
+            app:layout_constraintBottom_toTopOf="@+id/reqLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/emailInput" />
+
+        <LinearLayout
+            android:id="@+id/reqLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="4dp"
+            app:layout_constraintBottom_toTopOf="@+id/passwordConfirm"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/passwordInput">
+            <TextView android:id="@+id/reqLength" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="• 8-64 caracteres" android:textSize="10sp" android:textColor="@android:color/darker_gray" />
+            <TextView android:id="@+id/reqUpper" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="• Letra maiúscula" android:textSize="10sp" android:textColor="@android:color/darker_gray" />
+            <TextView android:id="@+id/reqLower" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="• Letra minúscula" android:textSize="10sp" android:textColor="@android:color/darker_gray" />
+            <TextView android:id="@+id/reqNumber" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="• Número" android:textSize="10sp" android:textColor="@android:color/darker_gray" />
+            <TextView android:id="@+id/reqSymbol" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="• Símbolo (!@#$%^&amp;*)" android:textSize="10sp" android:textColor="@android:color/darker_gray" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/passwordConfirm"
+            style="@style/input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:ems="10"
+            android:hint="confirmação da senha"
+            android:inputType="textPassword"
+            app:layout_constraintBottom_toTopOf="@+id/entrarBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reqLayout" />
+
+        <Button
+            android:id="@+id/entrarBtn"
+            style="@style/button"
+            android:layout_width="300sp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:paddingVertical="1sp"
+            android:text="Cadastrar"
+            app:layout_constraintBottom_toTopOf="@+id/semContaText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/passwordConfirm" />
+
+        <TextView
+            android:id="@+id/semContaText"
+            style="@style/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Já tem uma conta?"
+            app:layout_constraintBottom_toTopOf="@+id/cadastroText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/entrarBtn" />
+
+        <TextView
+            android:id="@+id/cadastroText"
+            style="@style/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:text="Fazer login"
+            app:layout_constraintBottom_toTopOf="@+id/visitanteOption"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/semContaText" />
+
+        <TextView
+            android:id="@+id/visitanteOption"
+            style="@style/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Entrar como visitante"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cadastroText" />
+
+        <ProgressBar
+            android:id="@+id/loadingProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
