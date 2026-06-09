@@ -8,12 +8,25 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/ic_launcher_background"
-        android:label=""
-        android:roundIcon="@drawable/ic_launcher_background"
+        android:icon="@drawable/logoicon"
+        android:label="CozinhaAi"
+        android:roundIcon="@drawable/logoicon"
         android:theme="@style/Theme.CozinhaAi">
         <activity
             android:name=".Cadastro"
+            android:name=".SigninScreen"
+            android:exported="false" />
+        <activity
+            android:name=".Search"
+            android:exported="false" />
+        <activity
+            android:name=".Home"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RecipeDetailActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
