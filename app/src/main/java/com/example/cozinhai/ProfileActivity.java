@@ -56,6 +56,10 @@ public class ProfileActivity extends AppCompatActivity {
         // 3. Configurar os cliques dos Cards
         cardChangePassword.setOnClickListener(v -> showChangePasswordDialog());
 
+        cardViewComments.setOnClickListener(v -> {
+            startActivity(new Intent(ProfileActivity.this, UserCommentsActivity.class));
+        });
+
         cardViewSavedRecipes.setOnClickListener(v -> {
             startActivity(new Intent(ProfileActivity.this, SavedRecipesActivity.class));
         });

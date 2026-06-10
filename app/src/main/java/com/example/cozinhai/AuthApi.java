@@ -50,6 +50,12 @@ public interface AuthApi {
         @Body RatingRequest request
     );
 
+    @GET("user/{id}/reviews")
+    Call<List<UserComment>> getUserRatings(
+        @Path("id") String userId,
+        @Header("Authorization") String token
+    );
+
     @GET("favorites")
     Call<List<Recipe>> getGlobalFavorites();
 
