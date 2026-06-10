@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,10 +34,14 @@ public class Search extends AppCompatActivity {
     private Button btnByIngredient, btnByTitle, btnSearchAction;
     private ImageButton btnFilterIcon;
     private EditText editSearch;
+    private ImageButton btnAddIcon;
+    private LinearLayout layoutIngredientChips;
+    private View scrollIngredients;
     private TextView txtStatus;
     private RecyclerView recyclerSearchResults;
     private RecipeAdapter adapter;
     private boolean isSearchingByIngredient = true;
+    private List<String> ingredientList = new ArrayList<>();
 
     private final String[] filterOptions = {"Sem Lactose", "Sem Gluten", "Light", "Vegetariano", "Vegano"};
     private boolean[] selectedFilters = {false, false, false, false, false};
@@ -58,28 +63,84 @@ public class Search extends AppCompatActivity {
         btnByTitle = findViewById(R.id.btnByTitle);
         btnSearchAction = findViewById(R.id.btnSearchAction);
         btnFilterIcon = findViewById(R.id.btnFilterIcon);
+        btnAddIcon = findViewById(R.id.btnAddIcon);
+        layoutIngredientChips = findViewById(R.id.layoutIngredientChips);
+        scrollIngredients = findViewById(R.id.scrollIngredients);
         editSearch = findViewById(R.id.editSearch);
         txtStatus = findViewById(R.id.txtStatus);
         recyclerSearchResults = findViewById(R.id.recyclerSearchResults);
 
         setupRecyclerView();
 
-        btnByIngredient.setOnClickListener(v -> updateSearchMode(true));
-        btnByTitle.setOnClickListener(v -> updateSearchMode(false));
+        btnByIngredient.setOnClickListener(v -> {
+            updateSearchMode(true);
+            clearIngredients();
+        });
+        btnByTitle.setOnClickListener(v -> {
+            updateSearchMode(false);
+            clearIngredients();
+        });
 
         btnFilterIcon.setOnClickListener(v -> showFilterDialog());
 
+        btnAddIcon.setOnClickListener(v -> {
+            String ingredient = editSearch.getText().toString().trim();
+            if (!ingredient.isEmpty()) {
+                addIngredientChip(ingredient);
+                editSearch.setText("");
+            }
+        });
+
         btnSearchAction.setOnClickListener(v -> {
             String query = editSearch.getText().toString().trim();
-            if (!query.isEmpty()) {
-                performSearch(query);
+            if (isSearchingByIngredient) {
+                if (!query.isEmpty() && !ingredientList.contains(query)) {
+                    addIngredientChip(query);
+                }
+                if (ingredientList.isEmpty()) {
+                    Toast.makeText(this, "Adicione pelo menos um ingrediente", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                performSearch(""); 
             } else {
-                Toast.makeText(this, "Digite algo para pesquisar", Toast.LENGTH_SHORT).show();
+                if (!query.isEmpty()) {
+                    performSearch(query);
+                } else {
+                    Toast.makeText(this, "Digite o título da receita", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         updateSearchMode(true);
         setupBottomNavigation();
+    }
+
+    private void addIngredientChip(String ingredient) {
+        if (ingredientList.contains(ingredient)) return;
+
+        ingredientList.add(ingredient);
+        scrollIngredients.setVisibility(View.VISIBLE);
+
+        View chipView = getLayoutInflater().inflate(R.layout.item_ingredient_chip, layoutIngredientChips, false);
+        TextView txtName = chipView.findViewById(R.id.txtIngredientName);
+        ImageButton btnRemove = chipView.findViewById(R.id.btnRemoveIngredient);
+
+        txtName.setText(ingredient);
+        btnRemove.setOnClickListener(v -> {
+            layoutIngredientChips.removeView(chipView);
+            ingredientList.remove(ingredient);
+            if (ingredientList.isEmpty()) {
+                scrollIngredients.setVisibility(View.GONE);
+            }
+        });
+
+        layoutIngredientChips.addView(chipView);
+    }
+
+    private void clearIngredients() {
+        ingredientList.clear();
+        layoutIngredientChips.removeAllViews();
+        scrollIngredients.setVisibility(View.GONE);
     }
 
     private void setupRecyclerView() {
@@ -141,19 +202,23 @@ public class Search extends AppCompatActivity {
             btnByTitle.setBackgroundTintList(ColorStateList.valueOf(colorInactive));
             btnByTitle.setTextColor(textInactive);
             editSearch.setHint("Insira os ingredientes");
+            btnAddIcon.setVisibility(View.VISIBLE);
         } else {
             btnByTitle.setBackgroundTintList(ColorStateList.valueOf(colorActive));
             btnByTitle.setTextColor(textActive);
             btnByIngredient.setBackgroundTintList(ColorStateList.valueOf(colorInactive));
             btnByIngredient.setTextColor(textInactive);
             editSearch.setHint("Pesquisar por título");
+            btnAddIcon.setVisibility(View.GONE);
         }
     }
 
     private void performSearch(String query) {
         String diet = "";
         StringBuilder intolerances = new StringBuilder();
+        String includeIngredients = "";
 
+        // Mapeamento dos filtros selecionados
         if (selectedFilters[0]) { // Sem Lactose
             if (intolerances.length() > 0) intolerances.append(",");
             intolerances.append("dairy");
@@ -168,47 +233,31 @@ public class Search extends AppCompatActivity {
         if (selectedFilters[4]) { // Vegano
             diet = "vegan";
         }
-        // "Light" (index 2) não possui mapeamento direto simples no complexSearch sem parâmetros extras de calorias.
 
         if (isSearchingByIngredient) {
-            // Busca por ingredientes
-            spoonacularApi.findByIngredients(query, 10, API_KEY).enqueue(new Callback<List<Recipe>>() {
-                @Override
-                public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        List<Recipe> results = response.body();
-                        updateUI(results);
-                    } else {
-                        updateUI(new ArrayList<>());
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<List<Recipe>> call, Throwable t) {
-                    Toast.makeText(Search.this, "Erro na busca", Toast.LENGTH_SHORT).show();
-                    updateUI(new ArrayList<>());
-                }
-            });
-        } else {
-            // Busca por título com filtros
-            spoonacularApi.searchByTitle(query, diet, intolerances.toString(), 10, API_KEY).enqueue(new Callback<RecipeSearchResponse>() {
-                @Override
-                public void onResponse(Call<RecipeSearchResponse> call, Response<RecipeSearchResponse> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        List<Recipe> results = response.body().getResults();
-                        updateUI(results);
-                    } else {
-                        updateUI(new ArrayList<>());
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<RecipeSearchResponse> call, Throwable t) {
-                    Toast.makeText(Search.this, "Erro na busca", Toast.LENGTH_SHORT).show();
-                    updateUI(new ArrayList<>());
-                }
-            });
+            // Concatena a lista de ingredientes para a API
+            includeIngredients = String.join(",", ingredientList);
+            query = ""; // No modo ingrediente, o complexSearch foca nos ingredientes incluídos
         }
+
+        spoonacularApi.complexSearch(query, includeIngredients, diet, intolerances.toString(), 10, API_KEY)
+                .enqueue(new Callback<RecipeSearchResponse>() {
+            @Override
+            public void onResponse(Call<RecipeSearchResponse> call, Response<RecipeSearchResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    updateUI(response.body().getResults());
+                } else {
+                    updateUI(new ArrayList<>());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RecipeSearchResponse> call, Throwable t) {
+                Log.e("SEARCH", "Falha na busca", t);
+                Toast.makeText(Search.this, "Erro na conexão", Toast.LENGTH_SHORT).show();
+                updateUI(new ArrayList<>());
+            }
+        });
     }
 
     private void updateUI(List<Recipe> recipes) {

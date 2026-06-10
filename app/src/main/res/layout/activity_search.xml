@@ -115,6 +115,27 @@
             android:paddingHorizontal="12dp" />
     </LinearLayout>
 
+    <!-- Container para os Ingredientes Adicionados -->
+    <HorizontalScrollView
+        android:id="@+id/scrollIngredients"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:paddingHorizontal="16dp"
+        android:scrollbars="none"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchBar">
+
+        <LinearLayout
+            android:id="@+id/layoutIngredientChips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingVertical="4dp" />
+    </HorizontalScrollView>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerSearchResults"
         android:layout_width="0dp"
@@ -124,7 +145,7 @@
         app:layout_constraintBottom_toTopOf="@id/bottomNav"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchBar"
+        app:layout_constraintTop_toBottomOf="@id/scrollIngredients"
         tools:listitem="@layout/recipe_card" />
 
     <TextView

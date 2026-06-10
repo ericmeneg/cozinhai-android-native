@@ -22,10 +22,11 @@ public interface SpoonacularApi {
             @Query("apiKey") String apiKey
     );
 
-    // Busca por título (Complex Search) com filtros
+    // Busca por título ou ingredientes (Complex Search) com filtros
     @GET("recipes/complexSearch")
-    Call<RecipeSearchResponse> searchByTitle(
+    Call<RecipeSearchResponse> complexSearch(
             @Query("query") String query,
+            @Query("includeIngredients") String includeIngredients,
             @Query("diet") String diet,
             @Query("intolerances") String intolerances,
             @Query("number") int number,
