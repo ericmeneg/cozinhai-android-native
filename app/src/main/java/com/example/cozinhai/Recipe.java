@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 public class Recipe {
     private int id;
     private String title;
+
+    @SerializedName(value = "image", alternate = {"recipeImage"})
     private String image;
 
     public int getId() { return id; }
