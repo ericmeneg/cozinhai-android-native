@@ -10,8 +10,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetworkClient {
     private static final String BASE_URL = "https://pi-3sem-backend.onrender.com/";
     private static final String SPOONACULAR_BASE_URL = "https://api.spoonacular.com/";
+    private static final String OVERPASS_BASE_URL = "https://overpass-api.de/";
     private static Retrofit retrofit = null;
     private static Retrofit spoonacularRetrofit = null;
+    private static Retrofit overpassRetrofit = null;
 
     public static OkHttpClient getOkHttpClient() {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
@@ -46,11 +48,26 @@ public class NetworkClient {
         return spoonacularRetrofit;
     }
 
+    public static Retrofit getOverpassClient() {
+        if (overpassRetrofit == null) {
+            overpassRetrofit = new Retrofit.Builder()
+                    .baseUrl(OVERPASS_BASE_URL)
+                    .client(getOkHttpClient())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        return overpassRetrofit;
+    }
+
     public static AuthApi getAuthApi() {
         return getClient().create(AuthApi.class);
     }
 
     public static SpoonacularApi getSpoonacularApi() {
         return getSpoonacularClient().create(SpoonacularApi.class);
+    }
+
+    public static OverpassApi getOverpassApi() {
+        return getOverpassClient().create(OverpassApi.class);
     }
 }

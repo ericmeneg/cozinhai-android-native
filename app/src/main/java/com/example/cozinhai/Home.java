@@ -161,6 +161,11 @@ public class Home extends AppCompatActivity {
             overridePendingTransition(0, 0);
             finish();
         });
+        findViewById(R.id.btnNavMap).setOnClickListener(v -> {
+            startActivity(new Intent(this, MapActivity.class));
+            overridePendingTransition(0, 0);
+            finish();
+        });
         findViewById(R.id.btnNavProfile).setOnClickListener(v -> {
             startActivity(new Intent(this, ProfileActivity.class));
             overridePendingTransition(0, 0);

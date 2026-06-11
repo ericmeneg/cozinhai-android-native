@@ -165,6 +165,11 @@ public class ProfileActivity extends AppCompatActivity {
             overridePendingTransition(0, 0);
             finish();
         });
+        findViewById(R.id.btnNavMap).setOnClickListener(v -> {
+            startActivity(new Intent(this, MapActivity.class));
+            overridePendingTransition(0, 0);
+            finish();
+        });
     }
 
     private void loadUserData() {
